@@ -1,14 +1,14 @@
-import { getRepositoriesCharactersFilter } from '@/domains/character/repositories/Characters/characters'
-import { getRepositoriesComicsFilter } from '@/domains/comic/repositories/Comics/comics'
-import { getRepositoriesCreatorsFilter } from '@/domains/creator/repositories/Creators/creators'
-import { getRepositoriesSeriesFilter } from '@/domains/serie/repositories/Series/series'
-import { getRepositoriesEventsFilter } from '@/domains/event/repositories/Events/events'
+import { getRepositoriesCharactersFilter } from '@/domains/character/repositories/Characters/repositoriesCharacters'
+import { getRepositoriesComicsFilter } from '@/domains/comic/repositories/Comics/repositoriesComics'
+import { getRepositoriesCreatorsFilter } from '@/domains/creator/repositories/Creators/repositoriesCreators'
+import { getRepositoriesSeriesFilter } from '@/domains/serie/repositories/Series/repositoriesSeries'
+import { getRepositoriesEventsFilter } from '@/domains/event/repositories/Events/repositoriesEvents'
 
-import { getRepositoriesCharacters } from '@/domains/character/repositories/Characters/characters'
-import { getRepositoriesComics } from '@/domains/comic/repositories/Comics/comics'
-import { getRepositoriesCreators } from '@/domains/creator/repositories/Creators/creators'
-import { getRepositoriesEvents } from '@/domains/event/repositories/Events/events'
-import { getRepositoriesSeries } from '@/domains/serie/repositories/Series/series'
+import { getRepositoriesCharacters } from '@/domains/character/repositories/Characters/repositoriesCharacters'
+import { getRepositoriesComics } from '@/domains/comic/repositories/Comics/repositoriesComics'
+import { getRepositoriesCreators } from '@/domains/creator/repositories/Creators/repositoriesCreators'
+import { getRepositoriesEvents } from '@/domains/event/repositories/Events/repositoriesEvents'
+import { getRepositoriesSeries } from '@/domains/serie/repositories/Series/repositoriesSeries'
 
 export const getFilteredCatalogData = async (
   filter: string,

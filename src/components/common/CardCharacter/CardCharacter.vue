@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CharacterModel } from '@/domains/character/models/character'
+import type { CharacterModel } from '@/domains/character/models/character'
 
 const props = defineProps<{
   character: CharacterModel

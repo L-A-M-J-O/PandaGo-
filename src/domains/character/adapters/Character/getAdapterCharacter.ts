@@ -1,9 +1,9 @@
-import { getCharacterById } from '../../repositories/Character/character'
+import { getCharacterById } from '../../repositories/Character/repositoriesCharacter'
 
 export const getAdapterCharacterById = async (characterId: string) => {
   try {
-    const characters = await getCharacterById(characterId)
-    return characters
+    const character = await getCharacterById(characterId)
+    return character
   } catch (error) {
     throw new Error('Error fetching characters')
   }
