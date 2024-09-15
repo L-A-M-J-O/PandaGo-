@@ -3,10 +3,7 @@ import { CreatorModel } from '@/domains/creator/models/creator'
 
 export const getRepositoriesCreators = async (
   limit: number,
-  offset: number,
-  firstName?: string,
-  middleName?: string,
-  lastName?: string
+  offset: number
 ): Promise<CreatorModel[]> => {
   try {
     const params: any = {
@@ -14,19 +11,22 @@ export const getRepositoriesCreators = async (
       offset
     }
 
-    if (firstName) {
-      params.firstName = firstName
-    }
-    if (middleName) {
-      params.middleName = middleName
-    }
-    if (lastName) {
-      params.lastName = lastName
+    const response = await apiService.get('/creators', { params })
+    return response.data.data.results as CreatorModel[]
+  } catch (error) {
+    throw new Error('Error fetching creators')
+  }
+}
+
+export const getRepositoriesCreatorsFilter = async (firstName: string): Promise<CreatorModel[]> => {
+  try {
+    const params: any = {
+      firstName
     }
 
     const response = await apiService.get('/creators', { params })
     return response.data.data.results as CreatorModel[]
   } catch (error) {
-    throw new Error('Error fetching creators')
+    throw new Error('Error fetching filtered creators')
   }
 }

@@ -1,43 +1,79 @@
 <script lang="ts" setup>
-import { Character } from '@/models/Character'
+import { CharacterModel } from '@/domains/character/models/character'
 
 const props = defineProps<{
-  character: Character
+  character: CharacterModel
 }>()
 
-const getCharacterImageUrl = (character: Character) => {
+const getCharacterImageUrl = (character: CharacterModel) => {
   return `${character.thumbnail.path}.${character.thumbnail.extension}`
+}
+
+const getInitial = (name: string) => {
+  return name.charAt(0)
 }
 </script>
 
 <template>
-  <div class="max-w-sm w-full lg:max-w-full lg:flex">
-    <div
-      class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-      :style="{ backgroundImage: `url(${getCharacterImageUrl(props.character)})` }"
-      title="Character Image"
-    ></div>
-    <div
-      class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"
+  <div
+    class="relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer group"
+  >
+    <RouterLink
+      :to="{ name: 'CharacterDetail', params: { id: props.character.id } }"
+      class="block h-full w-full"
     >
-      <div class="mb-8">
-        <p class="text-sm text-gray-600 flex items-center">
-          <svg
-            class="fill-current text-gray-500 w-3 h-3 mr-2"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"
-            />
-          </svg>
-          Members only
-        </p>
-        <div class="text-gray-900 font-bold text-xl mb-2">
-          <h2>{{ props.character.name }}</h2>
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-700 transition-all duration-500 group-hover:scale-110"
+        :style="{
+          backgroundImage: `url(${getCharacterImageUrl(props.character)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }"
+      ></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"
+      ></div>
+      <div class="relative p-6 h-64 flex flex-col justify-end">
+        <div
+          class="absolute top-4 right-4 w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-4xl font-bold text-white transition-all duration-500 group-hover:scale-0"
+        >
+          {{ getInitial(props.character.name) }}
         </div>
-        <p>{{ props.character.description || 'No description available' }}</p>
+        <h2
+          class="text-2xl font-bold text-white mb-1 transform translate-y-8 transition-all duration-300 group-hover:translate-y-0"
+        >
+          {{ props.character.name }}
+        </h2>
+        <p class="text-sm text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
+          {{ props.character.description || 'No description available' }}
+        </p>
       </div>
-    </div>
+    </RouterLink>
   </div>
 </template>
+
+<style scoped>
+.group:hover .bg-gradient-to-t {
+  opacity: 1;
+}
+
+.block {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.relative {
+  overflow: hidden;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+</style>
