@@ -30,3 +30,16 @@ export const getRepositoriesEventsFilter = async (name: string): Promise<EventMo
     throw new Error('Error fetching filtered events')
   }
 }
+
+export const getRepositoriesEventsFilterByProperties = async (properties: {
+  [key: string]: any
+}): Promise<EventModel[]> => {
+  try {
+    const response = await apiService.get('/events', {
+      params: properties
+    })
+    return response.data.data.results as EventModel[]
+  } catch (error) {
+    throw new Error('Error fetching events by properties')
+  }
+}

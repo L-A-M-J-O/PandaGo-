@@ -29,3 +29,16 @@ export const getRepositoriesComicsFilter = async (title: string): Promise<ComicM
     throw new Error('Error fetching filtered comics')
   }
 }
+
+export const getRepositoriesComicsFilterByProperties = async (properties: {
+  [key: string]: any
+}): Promise<ComicModel[]> => {
+  try {
+    const response = await apiService.get('/comics', {
+      params: properties
+    })
+    return response.data.data.results as ComicModel[]
+  } catch (error) {
+    throw new Error('Error fetching comics by properties')
+  }
+}
