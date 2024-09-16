@@ -65,7 +65,7 @@ const truncatedDescription = computed(() => {
       <!-- Botón de ver más detalles -->
       <RouterLink
         :to="{ name: 'SerieDetail', params: { id: props.serie.id } }"
-        class="text-red-700 hover:underline mt-4 inline-block"
+        class="text-green-700 hover:underline mt-4 inline-block font-semibold"
         target="_blank"
       >
         View More Details

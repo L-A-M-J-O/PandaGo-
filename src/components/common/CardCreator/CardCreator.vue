@@ -53,9 +53,9 @@ const goToCreatorDetail = () => {
     >
       <button
         @click="goToCreatorDetail"
-        class="bg-red-700 hover:bg-red-800 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors duration-300"
+        class="bg-green-700 hover:bg-[#046C4E] text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors duration-300"
       >
-        Ver más
+        View more
       </button>
     </div>
   </div>

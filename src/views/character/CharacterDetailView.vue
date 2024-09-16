@@ -16,75 +16,153 @@ onMounted(async () => {
     console.error('Error fetching character details', error)
   }
 })
+
+const getCharacterImageUrl = (character: CharacterModel) => {
+  return `${character.thumbnail.path}.${character.thumbnail.extension}`
+}
 </script>
 
 <template>
-  <div v-if="characterDetail" class="bg-white rounded-lg shadow-xl overflow-hidden w-full">
-    <div class="relative h-64 sm:h-80">
-      <div class="absolute inset-0 flex items-center justify-center">
-        <span class="text-white text-9xl font-bold opacity-20">S</span>
+  <div v-if="characterDetail" class="px-4 py-8">
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <!-- Hero Section -->
+      <div class="md:flex">
+        <div class="md:w-1/2 relative">
+          <img
+            class="w-full h-full object-cover"
+            :src="getCharacterImageUrl(characterDetail)"
+            :alt="characterDetail.name"
+          />
+          <div
+            class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6"
+          >
+            <h1 class="text-4xl font-bold text-white mb-2">{{ characterDetail.name }}</h1>
+            <p class="text-xl text-gray-300">Superhero ID: {{ characterDetail.id }}</p>
+          </div>
+        </div>
+        <div class="md:w-1/2 p-8 bg-gradient-to-br from-gray-100 to-white">
+          <p class="text-xl text-gray-700 mb-4">
+            {{ characterDetail.description || 'No description available for this character.' }}
+          </p>
+          <p class="text-sm text-gray-500">
+            Last modified: {{ new Date(characterDetail.modified).toLocaleDateString() }}
+          </p>
+        </div>
       </div>
-      <img
-        :src="`${characterDetail.thumbnail.path}.${characterDetail.thumbnail.extension}`"
-        alt="Character Image"
-        class="absolute inset-0 w-full h-full object-cover opacity-80"
-      />
 
+      <!-- Content Sections -->
+      <div class="grid md:grid-cols-2 gap-8 p-8">
+        <!-- Comics Section -->
+        <div
+          v-if="characterDetail.comics.items.length"
+          class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300"
+        >
+          <h2 class="text-2xl font-bold text-cyan-500 mb-4">
+            Comics
+            <span class="text-gray-500">({{ characterDetail.comics.available }} available)</span>
+          </h2>
+          <ul class="space-y-2">
+            <li
+              v-for="comic in characterDetail.comics.items.slice(0, 5)"
+              :key="comic.resourceURI"
+              class="flex items-center"
+            >
+              <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>{{ comic.name }}
+            </li>
+          </ul>
+          <a href="#" class="mt-4 inline-block text-indigo-600 hover:text-indigo-800 font-semibold"
+            >View all comics →</a
+          >
+        </div>
+
+        <!-- Series Section -->
+        <div
+          v-if="characterDetail.series.items.length"
+          class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300"
+        >
+          <h2 class="text-2xl font-bold text-purple-600 mb-4">
+            Series
+            <span class="text-gray-500">({{ characterDetail.series.available }} available)</span>
+          </h2>
+          <ul class="space-y-2">
+            <li
+              v-for="serie in characterDetail.series.items.slice(0, 5)"
+              :key="serie.resourceURI"
+              class="flex items-center"
+            >
+              <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>{{ serie.name }}
+            </li>
+          </ul>
+          <a href="#" class="mt-4 inline-block text-purple-600 hover:text-purple-800 font-semibold"
+            >View all series →</a
+          >
+        </div>
+
+        <!-- Stories Section -->
+        <div
+          v-if="characterDetail.stories.items.length"
+          class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300"
+        >
+          <h2 class="text-2xl font-bold text-blue-600 mb-4">
+            Stories
+            <span class="text-gray-500">({{ characterDetail.stories.available }} available)</span>
+          </h2>
+          <ul class="space-y-2">
+            <li
+              v-for="story in characterDetail.stories.items.slice(0, 5)"
+              :key="story.resourceURI"
+              class="flex items-center"
+            >
+              <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>{{ story.name }} ({{
+                story.type
+              }})
+            </li>
+          </ul>
+          <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-semibold"
+            >View all stories →</a
+          >
+        </div>
+
+        <!-- Events Section -->
+        <div
+          v-if="characterDetail.events.items.length"
+          class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300"
+        >
+          <h2 class="text-2xl font-bold text-red-600 mb-4">
+            Events
+            <span class="text-gray-500">({{ characterDetail.events.available }} available)</span>
+          </h2>
+          <ul class="space-y-2">
+            <li
+              v-for="event in characterDetail.events.items.slice(0, 5)"
+              :key="event.resourceURI"
+              class="flex items-center"
+            >
+              <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>{{ event.name }}
+            </li>
+          </ul>
+          <a href="#" class="mt-4 inline-block text-red-600 hover:text-red-800 font-semibold"
+            >View all events →</a
+          >
+        </div>
+      </div>
+
+      <!-- Related Links Section -->
       <div
-        class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent"
+        v-if="characterDetail.urls.length"
+        class="bg-gradient-to-r from-[#046C4E] to-[#2ED926] p-8 text-white"
       >
-        <h1 class="text-4xl font-bold text-white mb-2">{{ characterDetail.name }}</h1>
-        <p class="text-xl text-white opacity-80">Clark Kent</p>
-      </div>
-    </div>
-    <div class="p-6 space-y-6">
-      <div class="flex flex-wrap gap-4">
-        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold"
-          >Fuerza sobrehumana</span
-        >
-        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold"
-          >Vuelo</span
-        >
-        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold"
-          >Visión de rayos X</span
-        >
-        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold"
-          >Invulnerabilidad</span
-        >
-      </div>
-      <p class="text-gray-600 leading-relaxed">
-        {{ characterDetail.description || 'No description available' }}
-      </p>
-      <div class="border-t border-gray-200 pt-6">
-        <h2 class="text-2xl font-semibold mb-4">Estadísticas</h2>
-        <div class="space-y-4">
-          <div>
-            <div class="flex justify-between mb-1">
-              <span class="text-sm font-medium text-gray-700">Fuerza</span>
-              <span class="text-sm font-medium text-gray-700">100%</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-              <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between mb-1">
-              <span class="text-sm font-medium text-gray-700">Inteligencia</span>
-              <span class="text-sm font-medium text-gray-700">80%</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-              <div class="bg-green-600 h-2.5 rounded-full" style="width: 80%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between mb-1">
-              <span class="text-sm font-medium text-gray-700">Velocidad</span>
-              <span class="text-sm font-medium text-gray-700">95%</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-              <div class="bg-yellow-600 h-2.5 rounded-full" style="width: 95%"></div>
-            </div>
-          </div>
+        <h2 class="text-3xl font-bold mb-6">Related Links</h2>
+        <div class="flex flex-wrap gap-4">
+          <a
+            v-for="link in characterDetail.urls"
+            :key="link.url"
+            :href="link.url"
+            target="_blank"
+            class="bg-white text-[#046C4E] font-bold py-2 px-6 rounded-full hover:bg-opacity-90 transition duration-300"
+          >
+            {{ link.type }}
+          </a>
         </div>
       </div>
     </div>
