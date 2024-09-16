@@ -28,7 +28,8 @@ export const useCatalogStore = defineStore('catalogStore', {
     offset: 0,
     limit: 8,
     filter: '',
-    selectedCategories: [] as string[] // Categorías seleccionadas
+    selectedCategories: [] as string[],
+    filterDate: '' as string // Fecha seleccionada
   }),
 
   actions: {
@@ -37,7 +38,6 @@ export const useCatalogStore = defineStore('catalogStore', {
       this.error = null
 
       try {
-        // Desestructuramos los valores devueltos por Promise.all
         const [characters, comics, creators, events, series] = await Promise.all([
           getRepositoriesCharacters(this.limit, this.offset),
           getRepositoriesComics(this.limit, this.offset),
@@ -75,11 +75,44 @@ export const useCatalogStore = defineStore('catalogStore', {
         this.filteredCreators = creators || []
         this.filteredEvents = events || []
         this.filteredSeries = series || []
+
+        if (this.filterDate) {
+          this.applyDateFilter()
+        }
       } catch (error) {
         this.error = 'Error while applying filter'
       } finally {
         this.loading = false
       }
+    },
+
+    applyDateFilter() {
+      const selectedDate = new Date(this.filterDate)
+
+      // Filtrar personajes
+      this.filteredCharacters = this.filteredCharacters.filter((character) => {
+        return new Date(character.modified) >= selectedDate
+      })
+
+      // Filtrar cómics
+      this.filteredComics = this.filteredComics.filter((comic) => {
+        return new Date(comic.modified) >= selectedDate
+      })
+
+      // Filtrar creadores
+      this.filteredCreators = this.filteredCreators.filter((creator) => {
+        return new Date(creator.modified) >= selectedDate
+      })
+
+      // Filtrar eventos
+      this.filteredEvents = this.filteredEvents.filter((event) => {
+        return new Date(event.modified) >= selectedDate
+      })
+
+      // Filtrar series
+      this.filteredSeries = this.filteredSeries.filter((serie) => {
+        return new Date(serie.modified) >= selectedDate
+      })
     },
 
     // Aplicar filtro de categorías
@@ -109,6 +142,49 @@ export const useCatalogStore = defineStore('catalogStore', {
       } else {
         this.applyFilter()
       }
+    },
+
+    // Actualizar la fecha seleccionada y aplicar el filtro de fecha
+    updateSelectedDate(date: string) {
+      this.filterDate = date
+
+      // Si hay un filtro de búsqueda, aplicar filtro de fecha sobre los resultados de búsqueda
+      if (this.filter) {
+        this.applyDateFilter()
+      } else {
+        // Si no hay búsqueda, filtrar por fecha en todos los datos
+        this.filterByDateWithoutSearch()
+      }
+    },
+
+    // Filtrar por fecha sin un filtro de búsqueda
+    filterByDateWithoutSearch() {
+      const selectedDate = new Date(this.filterDate)
+
+      // Filtrar personajes
+      this.filteredCharacters = this.characters.filter((character) => {
+        return new Date(character.modified) >= selectedDate
+      })
+
+      // Filtrar cómics
+      this.filteredComics = this.comics.filter((comic) => {
+        return new Date(comic.modified) >= selectedDate
+      })
+
+      // Filtrar creadores
+      this.filteredCreators = this.creators.filter((creator) => {
+        return new Date(creator.modified) >= selectedDate
+      })
+
+      // Filtrar eventos
+      this.filteredEvents = this.events.filter((event) => {
+        return new Date(event.modified) >= selectedDate
+      })
+
+      // Filtrar series
+      this.filteredSeries = this.series.filter((serie) => {
+        return new Date(serie.modified) >= selectedDate
+      })
     },
 
     // Función para ordenar A-Z o Z-A

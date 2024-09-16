@@ -31,3 +31,16 @@ export const getRepositoriesSeriesFilter = async (title: string): Promise<SerieM
     throw new Error('Error fetching filtered series')
   }
 }
+
+export const getRepositoriesSeriesFilterByProperties = async (properties: {
+  [key: string]: any
+}): Promise<SerieModel[]> => {
+  try {
+    const response = await apiService.get('/series', {
+      params: properties
+    })
+    return response.data.data.results as SerieModel[]
+  } catch (error) {
+    throw new Error('Error fetching series by properties')
+  }
+}

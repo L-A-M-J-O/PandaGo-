@@ -29,3 +29,17 @@ export const getRepositoriesCharactersFilter = async (name: string): Promise<Cha
     throw new Error('Error fetching filtered characters')
   }
 }
+
+export const getRepositoriesCharactersFilterByProperties = async (properties: {
+  [key: string]: any
+}): Promise<CharacterModel[]> => {
+  try {
+    console.log(properties)
+    const response = await apiService.get('/characters', {
+      params: properties
+    })
+    return response.data.data.results as CharacterModel[]
+  } catch (error) {
+    throw new Error('Error fetching characters by properties')
+  }
+}

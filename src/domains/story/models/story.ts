@@ -6,7 +6,7 @@ import type {
   StoryCharacters,
   StoryEvents,
   OriginalIssue
-} from '@/domains/storie/interfaces/storie'
+} from '@/domains/story/interfaces/story'
 
 export class StoryModel implements IStory {
   id: number

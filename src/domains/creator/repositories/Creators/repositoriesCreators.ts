@@ -30,3 +30,16 @@ export const getRepositoriesCreatorsFilter = async (firstName: string): Promise<
     throw new Error('Error fetching filtered creators')
   }
 }
+
+export const getRepositoriesCreatorsFilterByProperties = async (properties: {
+  [key: string]: any
+}): Promise<CreatorModel[]> => {
+  try {
+    const response = await apiService.get('/creators', {
+      params: properties
+    })
+    return response.data.data.results as CreatorModel[]
+  } catch (error) {
+    throw new Error('Error fetching creators by properties')
+  }
+}

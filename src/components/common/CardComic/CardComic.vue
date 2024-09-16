@@ -79,7 +79,7 @@ const truncatedDescription = computed(() => {
             :to="{ name: 'ComicDetail', params: { id: props.comic.id } }"
             class="bg-green-700 hover:bg-[#046C4E] text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors duration-300"
           >
-            Leer más
+            👁️
           </RouterLink>
         </div>
       </div>
