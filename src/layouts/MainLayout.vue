@@ -6,7 +6,7 @@ import MainNavbar from '@/components/layouts/MainLayout/MainNavbar.vue'
 
 <template>
   <header><MainNavbar /></header>
-  <main>
+  <main class="container mx-auto">
     <RouterView />
   </main>
   <footer><MainFooter /></footer>
